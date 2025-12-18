@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "baseUrl": "./src",
+    "types": ["cypress", "node"],
+    "paths": {
+      "*": ["types/*"]
+    }
+  },
+  "include": ["src/**/*", "cypress/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

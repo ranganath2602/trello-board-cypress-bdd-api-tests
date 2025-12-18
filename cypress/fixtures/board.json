@@ -1,0 +1,72 @@
+{
+  "name": "Sample Trello Board",
+  "desc": "This is a sample Trello board created for testing purposes.",
+  "closed": false,
+  "idOrganization": "1234567890abcdef",
+  "prefs": {
+    "permissionLevel": "private",
+    "voting": "disabled",
+    "comments": "members",
+    "invitations": "members",
+    "selfJoin": false,
+    "cardCovers": true,
+    "isTemplate": false,
+    "cardAging": "regular",
+    "calendarFeedEnabled": false,
+    "background": "blue",
+    "backgroundColor": "#0079BF",
+    "backgroundImage": null,
+    "backgroundImageScaled": null,
+    "backgroundTile": false,
+    "backgroundBrightness": "dark",
+    "backgroundBottomColor": null,
+    "backgroundTopColor": null
+  },
+  "labels": [
+    {
+      "id": "label1",
+      "name": "To Do",
+      "color": "green"
+    },
+    {
+      "id": "label2",
+      "name": "In Progress",
+      "color": "yellow"
+    },
+    {
+      "id": "label3",
+      "name": "Done",
+      "color": "red"
+    }
+  ],
+  "lists": [
+    {
+      "id": "list1",
+      "name": "Backlog",
+      "closed": false
+    },
+    {
+      "id": "list2",
+      "name": "Current Sprint",
+      "closed": false
+    }
+  ],
+  "cards": [
+    {
+      "id": "card1",
+      "name": "Sample Card 1",
+      "desc": "This is a sample card for testing.",
+      "idList": "list1",
+      "labels": ["label1"],
+      "due": null
+    },
+    {
+      "id": "card2",
+      "name": "Sample Card 2",
+      "desc": "This is another sample card for testing.",
+      "idList": "list2",
+      "labels": ["label2"],
+      "due": "2023-12-31T12:00:00Z"
+    }
+  ]
+}
