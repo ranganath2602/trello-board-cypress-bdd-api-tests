@@ -2,6 +2,26 @@
 
 This project contains a test suite for the Trello Board API using Cypress and Cucumber with TypeScript. The tests are designed to validate various operations related to Trello boards, ensuring that the API behaves as expected.
 
+## Continuous Integration (GitHub Actions) ✅
+
+This repository includes a GitHub Actions workflow at `.github/workflows/ci.yml` that:
+
+- Installs Node dependencies and caches npm
+- Runs TypeScript checks and the headless Cypress suite (`npm run test:headless`)
+- Uploads any Cypress videos and screenshots as artifacts
+- Optionally creates a GitHub Release when a tag is pushed (includes artifacts)
+
+Before enabling CI you must add the following repository secrets (Settings → Secrets):
+
+- `TRELLO_KEY` — your Trello API key
+- `TRELLO_TOKEN` — your Trello API token
+
+After adding secrets, GitHub Actions will run on pushes and PRs targeting `main`.
+
+Badge (shows workflow status):
+
+[![CI](https://github.com/rogercopy/trello-board-cypress-bdd-api-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/rogercopy/trello-board-cypress-bdd-api-tests/actions/workflows/ci.yml)
+
 ## Project Structure
 
 ```
