@@ -5,6 +5,9 @@ let createdBoardId: string | undefined;
 let boardIdUnderTest: string | undefined;
 let storedBoard: { id: string; name: string } | undefined;
 let deletedBoardId: string | undefined;
+let omitToken: boolean = false;
+let omitKey: boolean = false;
+let omitName: boolean = false;
 
 Given('a board exists', () => {
   // Ensure we have a board to act on. Reuse the one created earlier if present, otherwise create a new one.
@@ -85,6 +88,25 @@ Given('I have a valid API key and token', () => {
   const token = Cypress.env('TRELLO_TOKEN');
   expect(key, 'TRELLO_KEY').to.exist;
   expect(token, 'TRELLO_TOKEN').to.exist;
+  omitToken = false;
+  omitKey = false;
+});
+
+Given('I have a valid API {string} only', (authType: string) => {
+  if (!['key', 'token'].includes(authType)) {
+    throw new Error(`Invalid auth type: ${authType}`);
+  }
+
+  omitKey = authType !== 'key';
+  omitToken = authType !== 'token';
+
+  if (authType === 'key') {
+    expect(Cypress.env('TRELLO_KEY'), 'TRELLO_KEY').to.exist;
+  }
+
+  if (authType === 'token') {
+    expect(Cypress.env('TRELLO_TOKEN'), 'TRELLO_TOKEN').to.exist;
+  }
 });
 
 Given('a board with ID {string} exists', (id: string) => {
@@ -190,6 +212,36 @@ When('I delete the previously created board', () => {
     });
 });
 
+When('I attempt to create a board without providing a {string}', (missingField: string) => {
+    const qs: Record<string, string> = {};
+
+    if (missingField !== 'name') {
+      qs.name = 'BDD Test Board';
+    } 
+
+    if (missingField !== 'key' && !omitKey) {
+      qs.key = Cypress.env('TRELLO_KEY');
+    }
+
+    if (missingField !== 'token' && !omitToken) {
+      qs.token = Cypress.env('TRELLO_TOKEN');
+    }
+
+    return cy
+      .request({
+        method: 'POST',
+        url: 'https://api.trello.com/1/boards',
+        qs,
+        failOnStatusCode: false,
+      })
+      .then((resp) => {
+        lastResponse = resp.body;
+        cy.wrap(resp).as('requestResult');
+      });
+  }
+);
+
+
 Then('I should receive a response with status {int}', (status: number) => {
   // Trello client functions return response body; we can instead rely on cy.request status if needed.
   // For simplicity, assert lastResponse presence for 200 and then check aliased response status.
@@ -250,4 +302,20 @@ Then('the board should no longer exist', () => {
     .then((resp) => {
       expect(resp.status, `board ${idToCheck} deletion status`).to.equal(404);
     });
+});
+
+Then('the response body should contain the message {string}', (message: string) => {
+  return cy.get('@requestResult').then((resp: any) => {
+    const body = resp.body;
+
+    if (typeof body === 'object') {
+      expect(body).to.have.property('message');
+      expect(body.message).to.include(message);
+    } 
+    
+    else {
+      expect(body).to.be.a('string');
+      expect(body).to.include(message);
+    }
+  });
 });

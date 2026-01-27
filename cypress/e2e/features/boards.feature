@@ -25,3 +25,21 @@ Feature: Trello Boards CRUD Operations
     And the previously created board exists
     When I delete the previously created board
     Then the board should no longer exist
+
+  Scenario: Attempt to create a board without a name
+    Given I have a valid API key and token
+    When I attempt to create a board without providing a "name"
+    Then I should receive a response with status 400
+    And the response body should contain the message "invalid value for name"
+
+  Scenario: Attempt to create a board without a token
+    Given I have a valid API "key" only
+    When I attempt to create a board without providing a "token"
+    Then I should receive a response with status 401
+    And the response body should contain the message "missing scopes"
+
+  Scenario: Attempt to create a board without a key
+    Given I have a valid API "token" only
+    When I attempt to create a board without providing a "key"
+    Then I should receive a response with status 401
+    And the response body should contain the message "invalid key"
