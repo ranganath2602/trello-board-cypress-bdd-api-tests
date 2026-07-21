@@ -1,19 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2016",
+    "lib": ["dom", "es6"],
     "module": "commonjs",
-    "strict": true,
+    "types": ["cypress"],
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",
-    "rootDir": ".",
-    "baseUrl": "./src",
-    "types": ["cypress", "node"],
-    "paths": {
-      "*": ["types/*"]
-    }
-  },
-  "include": ["src/**/*", "cypress/**/*"],
-  "exclude": ["node_modules", "dist"]
+    "strict": true,
+    "skipLibCheck": true
+  }
 }
