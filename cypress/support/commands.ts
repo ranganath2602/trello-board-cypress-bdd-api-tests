@@ -1,1 +1,2 @@
-// This file is intentionally left blank.
+// Custom Cypress commands can be registered here.
+export {}

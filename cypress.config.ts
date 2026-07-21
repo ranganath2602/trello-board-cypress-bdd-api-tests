@@ -1,30 +1,30 @@
-import { defineConfig } from 'cypress';
-import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
-import webpackPreprocessor from '@cypress/webpack-preprocessor';
-import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
-import { createEsbuildPlugin } from '@badeball/cypress-cucumber-preprocessor/esbuild';
+import { defineConfig } from "cypress"
 
+/* eslint-disable */
 export default defineConfig({
-  e2e: {
-    baseUrl: 'https://api.trello.com',
-    specPattern: 'cypress/e2e/**/*.feature',
-    supportFile: 'cypress/support/index.ts',
-    env: {
-      TRELLO_KEY: process.env.TRELLO_KEY,
-      TRELLO_TOKEN: process.env.TRELLO_TOKEN,
-    },
-    async setupNodeEvents(on, config) {
-      // required for @badeball preprocessor
-      await addCucumberPreprocessorPlugin(on, config);
-
-      // Use esbuild bundler with the cucumber preprocessor plugin
-      const bundler = createBundler({
-        plugins: [createEsbuildPlugin(config)],
-      });
-
-      on('file:preprocessor', bundler);
-
-      return config;
+  reporter: "mocha-multi-reporters",
+  reporterOptions: {
+    reporterEnabled: "spec, mocha-junit-reporter",
+    mochaJunitReporterReporterOptions: {
+      mochaFile: "reports/TRELLO-[hash].xml",
     },
   },
-});
+  e2e: {
+    specPattern: "features/**/*.feature",
+    video: false,
+    screenshotOnRunFailure: false,
+    retries: {
+      runMode: 0,
+      openMode: 0
+    },
+    async setupNodeEvents(on, config) {
+      const createEsbuildPlugin = require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin
+      const createBundler = require("@bahmutov/cypress-esbuild-preprocessor")
+      await require("@badeball/cypress-cucumber-preprocessor").addCucumberPreprocessorPlugin(on, config)
+      on("file:preprocessor", createBundler({
+        plugins: [createEsbuildPlugin(config)],
+      }))
+      return config
+    }
+  },
+})
